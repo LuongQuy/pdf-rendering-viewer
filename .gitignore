@@ -1,4 +1,4 @@
 node_modules
 package-lock.json
 public/index.html
-public/svg.html
+#public/svg.html

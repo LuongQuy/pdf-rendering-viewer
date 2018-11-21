@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>PDF render to SVG</title>
+</head>
+
+<body>
+    <div id="the-svg"></div>
+</body>
+
+<script src="pdf.js"></script>
+<script type="text/javascript">
+    var url = 'test.pdf';
+    PDFJS.getDocument(url)
+        .then(function (pdf) {
+            return pdf.getPage(3);
+        })
+        .then(function (page) {
+            var scale = 1.0;
+
+            var viewport = page.getViewport(scale);
+
+            var container = document.getElementById('the-svg');
+
+            container.style.width = viewport.width + 'px';
+            container.style.height = viewport.height + 'px';
+
+            // SVG rendering by PDF.js
+            page.getOperatorList()
+                .then(function (opList) {
+                    var svgGfx = new PDFJS.SVGGraphics(page.commonObjs, page.objs);
+                    return svgGfx.getSVG(opList, viewport);
+                })
+                .then(function (svg) {
+                    container.appendChild(svg);
+                });
+        });
+
+
+</script>
+
+</html>
